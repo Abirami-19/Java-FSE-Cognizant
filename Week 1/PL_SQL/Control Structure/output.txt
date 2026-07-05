@@ -1,0 +1,34 @@
+-------------------------------
+Scenario 1
+-------------------------------
+John Doe is not eligible for the discount.
+Jane Smith is not eligible for the discount.
+Robert Lee is eligible for the senior citizen discount.
+Maria Gomez is eligible for the senior citizen discount.
+
+PL/SQL procedure successfully completed.
+
+
+
+
+-------------------------------
+Scenario 2
+-------------------------------
+John Doe is not eligible for VIP.
+Jane Smith is not eligible for VIP.
+Robert Lee has been promoted to VIP.
+Maria Gomez is not eligible for VIP.
+
+Total VIP Customers : 1
+
+PL/SQL procedure successfully completed.
+
+
+
+
+-------------------------------
+Scenario 3
+-------------------------------
+Reminder: Loan ID 3 for Maria Gomez is due on 22-JUL-2026
+
+PL/SQL procedure successfully completed.

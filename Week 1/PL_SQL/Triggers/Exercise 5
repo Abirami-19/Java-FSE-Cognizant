@@ -1,0 +1,205 @@
+-- ============================================================
+-- Exercise 5 : Triggers
+-- ============================================================
+-- Objective :
+-- To implement PL/SQL Triggers for maintaining
+-- data integrity and automating database operations.
+-- ============================================================
+
+
+-- ============================================================
+-- Step 1 : Create Tables
+-- ============================================================
+
+CREATE TABLE Customers (
+    CustomerID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    DOB DATE,
+    Balance NUMBER,
+    LastModified DATE
+);
+
+CREATE TABLE Accounts (
+    AccountID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    AccountType VARCHAR2(20),
+    Balance NUMBER,
+    LastModified DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+CREATE TABLE Transactions (
+    TransactionID NUMBER PRIMARY KEY,
+    AccountID NUMBER,
+    TransactionDate DATE,
+    Amount NUMBER,
+    TransactionType VARCHAR2(20),
+    FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID)
+);
+
+CREATE TABLE AuditLog (
+    AuditID NUMBER PRIMARY KEY,
+    TransactionID NUMBER,
+    ActionDate DATE,
+    Description VARCHAR2(200)
+);
+
+
+-- ============================================================
+-- Step 2 : Insert Sample Data
+-- ============================================================
+
+INSERT INTO Customers
+VALUES (1,'John Doe',TO_DATE('1985-05-15','YYYY-MM-DD'),
+1000,SYSDATE);
+
+INSERT INTO Customers
+VALUES (2,'Jane Smith',TO_DATE('1990-07-20','YYYY-MM-DD'),
+1500,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (101,1,'Savings',10000,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (102,2,'Checking',5000,SYSDATE);
+
+COMMIT;
+
+
+
+-- ============================================================
+-- Scenario 1
+-- UpdateCustomerLastModified
+-- Automatically update LastModified when a customer
+-- record is updated.
+-- ============================================================
+
+CREATE OR REPLACE TRIGGER UpdateCustomerLastModified
+
+BEFORE UPDATE
+ON Customers
+
+FOR EACH ROW
+
+BEGIN
+
+    :NEW.LastModified := SYSDATE;
+
+END;
+/
+
+-- Test Trigger
+
+UPDATE Customers
+SET Balance = 2000
+WHERE CustomerID = 1;
+
+COMMIT;
+
+
+
+
+-- ============================================================
+-- Scenario 2
+-- LogTransaction
+-- Insert an audit record whenever a transaction
+-- is inserted.
+-- ============================================================
+
+CREATE OR REPLACE TRIGGER LogTransaction
+
+AFTER INSERT
+ON Transactions
+
+FOR EACH ROW
+
+BEGIN
+
+    INSERT INTO AuditLog
+    VALUES(
+        :NEW.TransactionID,
+        :NEW.TransactionID,
+        SYSDATE,
+        'Transaction Added'
+    );
+
+END;
+/
+
+-- Test Trigger
+
+INSERT INTO Transactions
+VALUES(
+1,
+101,
+SYSDATE,
+500,
+'Deposit'
+);
+
+COMMIT;
+
+
+
+
+-- ============================================================
+-- Scenario 3
+-- CheckTransactionRules
+-- Validate deposits and withdrawals.
+-- ============================================================
+
+CREATE OR REPLACE TRIGGER CheckTransactionRules
+
+BEFORE INSERT
+ON Transactions
+
+FOR EACH ROW
+
+DECLARE
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID = :NEW.AccountID;
+
+    IF :NEW.TransactionType = 'Withdrawal' THEN
+
+        IF :NEW.Amount > v_balance THEN
+
+            RAISE_APPLICATION_ERROR(
+            -20001,
+            'Insufficient Balance');
+
+        END IF;
+
+    ELSIF :NEW.TransactionType = 'Deposit' THEN
+
+        IF :NEW.Amount <= 0 THEN
+
+            RAISE_APPLICATION_ERROR(
+            -20002,
+            'Deposit Amount Must Be Positive');
+
+        END IF;
+
+    END IF;
+
+END;
+/
+
+-- Test Trigger
+
+INSERT INTO Transactions
+VALUES(
+2,
+101,
+SYSDATE,
+300,
+'Withdrawal'
+);
+
+COMMIT;

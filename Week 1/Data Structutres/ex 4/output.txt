@@ -1,0 +1,12 @@
+Employee Added Successfully.
+Employee Added Successfully.
+Employee Added Successfully.
+
+Employee Found
+102  Alice  Developer  Rs.50000.0
+
+Employee Deleted Successfully.
+
+Employee Records
+101  John  Manager  Rs.60000.0
+102  Alice  Developer  Rs.50000.0

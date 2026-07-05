@@ -1,0 +1,26 @@
+====================================================
+Scenario 1 : GenerateMonthlyStatements
+====================================================
+
+Transaction ID : 1  Account : 101  Amount : 500  Type : Deposit
+Transaction ID : 2  Account : 102  Amount : 300  Type : Withdrawal
+
+PL/SQL procedure successfully completed.
+
+
+====================================================
+Scenario 2 : ApplyAnnualFee
+====================================================
+
+Annual maintenance fee applied successfully.
+
+PL/SQL procedure successfully completed.
+
+
+====================================================
+Scenario 3 : UpdateLoanInterestRates
+====================================================
+
+Loan interest rates updated successfully.
+
+PL/SQL procedure successfully completed.

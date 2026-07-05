@@ -1,0 +1,214 @@
+-- ============================================================
+-- Exercise 4 : Functions
+-- ============================================================
+-- Objective :
+-- To implement PL/SQL Functions for performing
+-- banking-related calculations and validations.
+-- ============================================================
+
+
+-- ============================================================
+-- Step 1 : Create Tables
+-- ============================================================
+
+CREATE TABLE Customers (
+    CustomerID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    DOB DATE,
+    Balance NUMBER,
+    LastModified DATE
+);
+
+CREATE TABLE Accounts (
+    AccountID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    AccountType VARCHAR2(20),
+    Balance NUMBER,
+    LastModified DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+
+-- ============================================================
+-- Step 2 : Insert Sample Data
+-- ============================================================
+
+INSERT INTO Customers
+VALUES (1,'John Doe',TO_DATE('1985-05-15','YYYY-MM-DD'),
+1000,SYSDATE);
+
+INSERT INTO Customers
+VALUES (2,'Jane Smith',TO_DATE('1990-07-20','YYYY-MM-DD'),
+1500,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (101,1,'Savings',10000,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (102,2,'Checking',5000,SYSDATE);
+
+COMMIT;
+
+
+
+-- ============================================================
+-- Scenario 1
+-- CalculateAge
+-- Calculate the age of a customer.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION CalculateAge(
+
+    p_dob DATE
+
+)
+
+RETURN NUMBER
+
+IS
+
+    v_age NUMBER;
+
+BEGIN
+
+    v_age := TRUNC(MONTHS_BETWEEN(SYSDATE,p_dob)/12);
+
+    RETURN v_age;
+
+END;
+/
+
+-- Execute Function
+
+DECLARE
+
+    v_age NUMBER;
+
+BEGIN
+
+    v_age := CalculateAge(TO_DATE('1985-05-15','YYYY-MM-DD'));
+
+    DBMS_OUTPUT.PUT_LINE(
+    'Customer Age : ' || v_age);
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 2
+-- CalculateMonthlyInstallment
+-- Calculate monthly loan installment.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION CalculateMonthlyInstallment(
+
+    p_loanAmount NUMBER,
+    p_interestRate NUMBER,
+    p_years NUMBER
+
+)
+
+RETURN NUMBER
+
+IS
+
+    v_totalAmount NUMBER;
+    v_monthlyInstallment NUMBER;
+
+BEGIN
+
+    v_totalAmount :=
+    p_loanAmount +
+    (p_loanAmount * p_interestRate * p_years / 100);
+
+    v_monthlyInstallment :=
+    v_totalAmount / (p_years * 12);
+
+    RETURN ROUND(v_monthlyInstallment,2);
+
+END;
+/
+
+-- Execute Function
+
+DECLARE
+
+    v_installment NUMBER;
+
+BEGIN
+
+    v_installment :=
+    CalculateMonthlyInstallment(5000,5,5);
+
+    DBMS_OUTPUT.PUT_LINE(
+    'Monthly Installment : ' ||
+    v_installment);
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 3
+-- HasSufficientBalance
+-- Check whether an account has enough balance.
+-- ============================================================
+
+CREATE OR REPLACE FUNCTION HasSufficientBalance(
+
+    p_accountId NUMBER,
+    p_amount NUMBER
+
+)
+
+RETURN BOOLEAN
+
+IS
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID = p_accountId;
+
+    IF v_balance >= p_amount THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+
+END;
+/
+
+-- Execute Function
+
+DECLARE
+
+    v_result BOOLEAN;
+
+BEGIN
+
+    v_result := HasSufficientBalance(101,3000);
+
+    IF v_result THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Sufficient Balance Available.');
+
+    ELSE
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Insufficient Balance.');
+
+    END IF;
+
+END;
+/

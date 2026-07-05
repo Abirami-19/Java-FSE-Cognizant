@@ -1,0 +1,27 @@
+====================================================
+Scenario 1 : UpdateCustomerLastModified
+====================================================
+
+1 row updated.
+
+Commit complete.
+
+
+====================================================
+Scenario 2 : LogTransaction
+====================================================
+
+1 row inserted.
+
+Audit record created successfully.
+
+Commit complete.
+
+
+====================================================
+Scenario 3 : CheckTransactionRules
+====================================================
+
+1 row inserted.
+
+Commit complete.

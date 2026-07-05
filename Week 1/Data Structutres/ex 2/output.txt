@@ -1,0 +1,9 @@
+Product Found Using Linear Search
+ID : 104
+Name : Phone
+Category : Electronics
+
+Product Found Using Binary Search
+ID : 104
+Name : Phone
+Category : Electronics

@@ -1,0 +1,11 @@
+Sending Email Notification
+Email Notification: Meeting at 10 AM
+
+Sending Email and SMS Notification
+Email Notification: Project Deadline Tomorrow
+SMS Notification: Project Deadline Tomorrow
+
+Sending Email, SMS and Slack Notification
+Email Notification: Server Maintenance Tonight
+SMS Notification: Server Maintenance Tonight
+Slack Notification: Server Maintenance Tonight6

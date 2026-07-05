@@ -1,0 +1,6 @@
+First Display
+Loading CollegeLogo.png from remote server...
+Displaying CollegeLogo.png
+
+Second Display
+Displaying CollegeLogo.png

@@ -1,0 +1,7 @@
+Product Added Successfully.
+Product Added Successfully.
+Product Updated Successfully.
+Product Deleted Successfully.
+
+Inventory
+101  Laptop  15  Rs.65000.0

@@ -1,0 +1,4 @@
+Logger instance created.
+Log: Application started.
+Log: User logged in.
+Only one Logger instance exists.

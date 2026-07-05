@@ -1,0 +1,258 @@
+-- ============================================================
+-- Exercise 2 : Error Handling
+-- ============================================================
+-- To implement exception handling in PL/SQL using
+-- procedures and predefined/user-defined exceptions.
+-- ============================================================
+
+
+-- ============================================================
+-- Step 1 : Create Tables
+-- ============================================================
+
+CREATE TABLE Customers (
+    CustomerID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    DOB DATE,
+    Balance NUMBER,
+    LastModified DATE
+);
+
+CREATE TABLE Accounts (
+    AccountID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    AccountType VARCHAR2(20),
+    Balance NUMBER,
+    LastModified DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+CREATE TABLE Employees (
+    EmployeeID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    Position VARCHAR2(50),
+    Salary NUMBER,
+    Department VARCHAR2(50),
+    HireDate DATE
+);
+
+
+-- ============================================================
+-- Step 2 : Insert Sample Data
+-- ============================================================
+
+INSERT INTO Customers
+VALUES (1,'John Doe',TO_DATE('1985-05-15','YYYY-MM-DD'),
+1000,SYSDATE);
+
+INSERT INTO Customers
+VALUES (2,'Jane Smith',TO_DATE('1990-07-20','YYYY-MM-DD'),
+1500,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (101,1,'Savings',10000,SYSDATE);
+
+INSERT INTO Accounts
+VALUES (102,2,'Savings',5000,SYSDATE);
+
+INSERT INTO Employees
+VALUES (1,'Alice Johnson','Manager',
+70000,'HR',TO_DATE('2015-06-15','YYYY-MM-DD'));
+
+INSERT INTO Employees
+VALUES (2,'Bob Brown','Developer',
+60000,'IT',TO_DATE('2017-03-20','YYYY-MM-DD'));
+
+COMMIT;
+
+
+
+-- ============================================================
+-- Scenario 1
+-- SafeTransferFunds
+-- Transfer money between two accounts.
+-- Rollback if balance is insufficient.
+-- ============================================================
+
+CREATE OR REPLACE PROCEDURE SafeTransferFunds(
+
+    p_fromAccount NUMBER,
+    p_toAccount NUMBER,
+    p_amount NUMBER
+
+)
+
+IS
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID = p_fromAccount;
+
+    IF v_balance < p_amount THEN
+        RAISE_APPLICATION_ERROR(-20001,
+        'Insufficient Balance');
+    END IF;
+
+    UPDATE Accounts
+    SET Balance = Balance - p_amount
+    WHERE AccountID = p_fromAccount;
+
+    UPDATE Accounts
+    SET Balance = Balance + p_amount
+    WHERE AccountID = p_toAccount;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE('Fund Transfer Successful.');
+
+EXCEPTION
+
+    WHEN OTHERS THEN
+
+        ROLLBACK;
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Transfer Failed : ' || SQLERRM);
+
+END;
+/
+
+-- Execute Procedure
+
+BEGIN
+
+    SafeTransferFunds(101,102,3000);
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 2
+-- UpdateSalary
+-- Increase employee salary by a given percentage.
+-- ============================================================
+
+CREATE OR REPLACE PROCEDURE UpdateSalary(
+
+    p_employeeId NUMBER,
+    p_percentage NUMBER
+
+)
+
+IS
+
+BEGIN
+
+    UPDATE Employees
+    SET Salary = Salary + (Salary * p_percentage / 100)
+    WHERE EmployeeID = p_employeeId;
+
+    IF SQL%ROWCOUNT = 0 THEN
+
+        RAISE NO_DATA_FOUND;
+
+    END IF;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+    'Salary Updated Successfully.');
+
+EXCEPTION
+
+    WHEN NO_DATA_FOUND THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Employee ID not found.');
+
+    WHEN OTHERS THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Error : ' || SQLERRM);
+
+END;
+/
+
+-- Execute Procedure
+
+BEGIN
+
+    UpdateSalary(2,10);
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 3
+-- AddNewCustomer
+-- Insert a new customer.
+-- Prevent duplicate Customer IDs.
+-- ============================================================
+
+CREATE OR REPLACE PROCEDURE AddNewCustomer(
+
+    p_customerId NUMBER,
+    p_name VARCHAR2,
+    p_dob DATE,
+    p_balance NUMBER
+
+)
+
+IS
+
+BEGIN
+
+    INSERT INTO Customers
+
+    VALUES(
+
+        p_customerId,
+        p_name,
+        p_dob,
+        p_balance,
+        SYSDATE
+
+    );
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE(
+    'Customer Added Successfully.');
+
+EXCEPTION
+
+    WHEN DUP_VAL_ON_INDEX THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Customer ID already exists.');
+
+    WHEN OTHERS THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+        'Error : ' || SQLERRM);
+
+END;
+/
+
+BEGIN
+
+    AddNewCustomer(
+        3,
+        'Robert Lee',
+        TO_DATE('1988-04-10','YYYY-MM-DD'),
+        8000
+    );
+
+END;
+/

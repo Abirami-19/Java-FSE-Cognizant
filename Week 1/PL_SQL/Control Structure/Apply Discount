@@ -1,0 +1,224 @@
+-- ============================================================
+-- Exercise 1 : Control Structures
+-- ============================================================
+-- To implement PL/SQL control structures using loops,
+-- conditional statements, and decision-making.
+-- ============================================================
+
+
+-- ============================================================
+-- Step 1 : Create Tables
+-- ============================================================
+
+CREATE TABLE Customers (
+    CustomerID NUMBER PRIMARY KEY,
+    Name VARCHAR2(100),
+    DOB DATE,
+    Balance NUMBER,
+    LastModified DATE,
+    IsVIP CHAR(1) DEFAULT 'N'
+);
+
+CREATE TABLE Loans (
+    LoanID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    LoanAmount NUMBER,
+    InterestRate NUMBER,
+    StartDate DATE,
+    EndDate DATE,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+
+-- ============================================================
+-- Step 2 : Insert Sample Data
+-- ============================================================
+
+INSERT INTO Customers
+VALUES (1, 'John Doe', TO_DATE('1985-05-15','YYYY-MM-DD'),
+        1000, SYSDATE, 'N');
+
+INSERT INTO Customers
+VALUES (2, 'Jane Smith', TO_DATE('1990-07-20','YYYY-MM-DD'),
+        1500, SYSDATE, 'N');
+
+INSERT INTO Customers
+VALUES (3, 'Robert Lee', TO_DATE('1958-03-02','YYYY-MM-DD'),
+        25000, SYSDATE, 'N');
+
+INSERT INTO Customers
+VALUES (4, 'Maria Gomez', TO_DATE('1962-11-30','YYYY-MM-DD'),
+        8500, SYSDATE, 'N');
+
+
+INSERT INTO Loans
+VALUES (1, 1, 5000, 5, SYSDATE, ADD_MONTHS(SYSDATE,60));
+
+INSERT INTO Loans
+VALUES (2, 3, 10000, 6.5, SYSDATE, ADD_MONTHS(SYSDATE,36));
+
+INSERT INTO Loans
+VALUES (3, 4, 7500, 4.25, SYSDATE, SYSDATE + 20);
+
+COMMIT;
+
+
+-- ============================================================
+-- Scenario 1
+-- Apply a 1% discount to loan interest rates for customers
+-- above 60 years of age.
+-- ============================================================
+
+DECLARE
+
+    v_age NUMBER;
+
+BEGIN
+
+    FOR customer_rec IN
+    (
+        SELECT CustomerID,
+               Name,
+               DOB
+        FROM Customers
+    )
+    LOOP
+
+        v_age := TRUNC(MONTHS_BETWEEN(SYSDATE,
+                       customer_rec.DOB) / 12);
+
+        IF v_age > 60 THEN
+
+            UPDATE Loans
+            SET InterestRate = InterestRate - (InterestRate * 0.01)
+            WHERE CustomerID = customer_rec.CustomerID;
+
+            DBMS_OUTPUT.PUT_LINE(
+                customer_rec.Name ||
+                ' is eligible for the senior citizen discount.'
+            );
+
+        ELSE
+
+            DBMS_OUTPUT.PUT_LINE(
+                customer_rec.Name ||
+                ' is not eligible for the discount.'
+            );
+
+        END IF;
+
+    END LOOP;
+
+    COMMIT;
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 2
+-- Promote customers with balance greater than $10,000
+-- to VIP status.
+-- ============================================================
+
+DECLARE
+
+    v_vip_count NUMBER := 0;
+
+BEGIN
+
+    FOR customer_rec IN
+    (
+        SELECT CustomerID,
+               Name,
+               Balance
+        FROM Customers
+    )
+    LOOP
+
+        IF customer_rec.Balance > 10000 THEN
+
+            UPDATE Customers
+            SET IsVIP = 'Y'
+            WHERE CustomerID = customer_rec.CustomerID;
+
+            v_vip_count := v_vip_count + 1;
+
+            DBMS_OUTPUT.PUT_LINE(
+                customer_rec.Name ||
+                ' has been promoted to VIP.'
+            );
+
+        ELSE
+
+            DBMS_OUTPUT.PUT_LINE(
+                customer_rec.Name ||
+                ' is not eligible for VIP.'
+            );
+
+        END IF;
+
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Total VIP Customers : ' || v_vip_count
+    );
+
+    COMMIT;
+
+END;
+/
+
+
+
+
+-- ============================================================
+-- Scenario 3
+-- Display reminder messages for loans due within
+-- the next 30 days.
+-- ============================================================
+
+DECLARE
+
+    v_loan_found BOOLEAN := FALSE;
+
+BEGIN
+
+    FOR loan_rec IN
+    (
+        SELECT l.LoanID,
+               c.Name,
+               l.EndDate
+        FROM Loans l
+        INNER JOIN Customers c
+        ON l.CustomerID = c.CustomerID
+        WHERE l.EndDate BETWEEN SYSDATE
+                            AND SYSDATE + 30
+    )
+    LOOP
+
+        v_loan_found := TRUE;
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Reminder: Loan ID ' ||
+            loan_rec.LoanID ||
+            ' for ' ||
+            loan_rec.Name ||
+            ' is due on ' ||
+            TO_CHAR(loan_rec.EndDate,'DD-MON-YYYY')
+        );
+
+    END LOOP;
+
+    IF NOT v_loan_found THEN
+
+        DBMS_OUTPUT.PUT_LINE(
+            'No loans are due within the next 30 days.'
+        );
+
+    END IF;
+
+END;
+/

@@ -1,0 +1,25 @@
+====================================================
+Scenario 1 : CalculateAge
+====================================================
+
+Customer Age : 41
+
+PL/SQL procedure successfully completed.
+
+
+====================================================
+Scenario 2 : CalculateMonthlyInstallment
+====================================================
+
+Monthly Installment : 104.17
+
+PL/SQL procedure successfully completed.
+
+
+====================================================
+Scenario 3 : HasSufficientBalance
+====================================================
+
+Sufficient Balance Available.
+
+PL/SQL procedure successfully completed.
