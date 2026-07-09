@@ -1,0 +1,14 @@
+Inside main
+
+All Countries
+[Country [code=IN, name=India],
+ Country [code=US, name=United States of America]]
+
+Country Count
+2
+
+Native Query
+[Country [code=IN, name=India],
+ Country [code=US, name=United States of America]]
+
+End

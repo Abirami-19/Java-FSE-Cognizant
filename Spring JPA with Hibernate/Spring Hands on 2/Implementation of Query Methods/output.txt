@@ -1,0 +1,16 @@
+Spring Boot Application Started Successfully.
+
+Hibernate ORM Mapping Demonstrated Successfully.
+
+Relationships Configured:
+
+@ManyToOne       : Employee → Department
+@OneToMany       : Department → Employees
+@ManyToMany      : Student ↔ Course
+@JoinColumn      : department_id
+@JoinTable       : student_course
+FetchType.EAGER  : Department loaded with Employee
+FetchType.LAZY   : Employees loaded on demand
+mappedBy         : Used in Department and Course
+
+BUILD SUCCESSFUL
