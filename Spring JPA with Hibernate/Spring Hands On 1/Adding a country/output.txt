@@ -1,7 +1,0 @@
-Inside main
-
-Start
-
-country=Country [code=JP, name=Japan]
-
-End
