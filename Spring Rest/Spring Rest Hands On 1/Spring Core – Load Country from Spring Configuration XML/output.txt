@@ -1,4 +1,0 @@
-Inside Country Constructor.
-Inside setCode()
-Inside setName()
-Country : Country [code=IN, name=India]
