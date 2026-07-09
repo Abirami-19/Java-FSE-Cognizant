@@ -1,0 +1,27 @@
+Hands-on : Display Employee List and Edit Employee Form using RESTful Web Service
+
+
+--Objective:
+
+The objective of this hands-on is to integrate the Angular application with a Spring Boot RESTful Web Service so that employee information is retrieved dynamically instead of using hardcoded data.
+
+
+--Description:
+
+In the previous Angular module, the Employee List and Edit Employee screens displayed hardcoded employee data. In this hands-on, the application is enhanced to fetch employee information from a Spring Boot RESTful Web Service.
+
+The implementation involves creating a static employee list using Spring XML configuration, exposing the employee data through REST APIs, and modifying the Angular application to consume these APIs. When the user clicks the Edit button for an employee, the application retrieves the corresponding employee details from the REST service and displays them in the Edit Employee form.
+
+--Flow of Execution:
+
+1. Store employee details in a Spring XML configuration file.
+2. Create a RESTful Web Service to read employee data from the XML configuration.
+3. Return the employee details in JSON format.
+4. Consume the REST API from the Angular application using HTTP requests.
+5. Display the employee list in the Angular application.
+6. Retrieve and display the selected employee details in the Edit Employee form.
+
+
+--Outcome
+
+The Angular application successfully retrieves employee data from the Spring Boot RESTful Web Service instead of using hardcoded values. This approach improves maintainability, scalability, and enables dynamic data retrieval for both the Employee List and Edit Employee screens.

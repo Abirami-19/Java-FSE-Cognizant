@@ -1,0 +1,6 @@
+BUILD SUCCESS
+
+// or in Eclipse/STS //
+
+Maven project updated successfully.
+Required Spring libraries downloaded.

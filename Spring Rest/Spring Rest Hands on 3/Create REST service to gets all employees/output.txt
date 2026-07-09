@@ -1,0 +1,90 @@
+POSTMAN REQUEST: GET http://localhost:8083/employees
+
+OUTPUT:
+
+[
+  {
+    "id": 1,
+    "name": "John",
+    "salary": 50000,
+    "permanent": true,
+    "department": {
+      "id": 1,
+      "name": "Payroll"
+    },
+    "skills": [
+      {
+        "id": 1,
+        "name": "Java"
+      },
+      {
+        "id": 2,
+        "name": "Spring"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Priya",
+    "salary": 60000,
+    "permanent": true,
+    "department": {
+      "id": 2,
+      "name": "HR"
+    },
+    "skills": [
+      {
+        "id": 2,
+        "name": "Spring"
+      },
+      {
+        "id": 3,
+        "name": "Angular"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Rahul",
+    "salary": 45000,
+    "permanent": false,
+    "department": {
+      "id": 3,
+      "name": "IT"
+    },
+    "skills": [
+      {
+        "id": 1,
+        "name": "Java"
+      },
+      {
+        "id": 3,
+        "name": "Angular"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Anita",
+    "salary": 70000,
+    "permanent": true,
+    "department": {
+      "id": 1,
+      "name": "Payroll"
+    },
+    "skills": [
+      {
+        "id": 1,
+        "name": "Java"
+      },
+      {
+        "id": 2,
+        "name": "Spring"
+      },
+      {
+        "id": 3,
+        "name": "Angular"
+      }
+    ]
+  }
+]
