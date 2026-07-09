@@ -1,0 +1,113 @@
+# Hands-on 1
+## Spring Data JPA - Quick Example
+
+### Aim
+
+To develop a Spring Boot application using Spring Data JPA and Hibernate to retrieve data from a MySQL database.
+
+---
+
+## Software Requirements
+
+- Java JDK
+- MySQL Server 8.0
+- MySQL Workbench 8
+- Maven 3.6.2
+- Eclipse IDE / VS Code
+
+---
+
+## Procedure
+
+### Step 1: Create Spring Boot Project
+
+- Open Spring Initializr.
+- Group: com.cognizant
+- Artifact: orm-learn
+- Description: Demo project for Spring Data JPA and Hibernate
+- Add Dependencies:
+  - Spring Boot DevTools
+  - Spring Data JPA
+  - MySQL Driver
+
+---
+
+### Step 2: Configure Database
+
+Create the database schema named **ormlearn**.
+
+Create the **country** table.
+
+Insert sample records into the table.
+
+---
+
+### Step 3: Configure application.properties
+
+Configure
+
+- MySQL database connection
+- Hibernate properties
+- Logging configuration
+
+---
+
+### Step 4: Create Entity Class
+
+Create **Country.java**.
+
+Annotations used:
+
+- @Entity
+- @Table
+- @Id
+- @Column
+
+Purpose:
+
+- @Entity → Represents a database table.
+- @Table → Maps Java class to database table.
+- @Id → Specifies the primary key.
+- @Column → Maps class fields to table columns.
+
+---
+
+### Step 5: Create Repository
+
+Create **CountryRepository**.
+
+- Extend JpaRepository<Country, String>.
+- Annotate with @Repository.
+
+Purpose:
+
+Provides CRUD operations without writing SQL queries.
+
+---
+
+### Step 6: Create Service Layer
+
+Create **CountryService**.
+
+- Annotate with @Service.
+- Inject CountryRepository using @Autowired.
+- Create getAllCountries() method.
+- Annotate the method with @Transactional.
+
+Purpose:
+
+Implements business logic and interacts with the repository.
+
+---
+
+### Step 7: Test the Application
+
+- Obtain CountryService from ApplicationContext.
+- Invoke getAllCountries().
+- Display the retrieved country list in the console.
+
+---
+
+## Result
+
+Thus, a Spring Boot application using Spring Data JPA and Hibernate was created successfully. The application connected to the MySQL database and retrieved the records from the Country table.

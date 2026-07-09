@@ -1,0 +1,11 @@
+Countries containing 'Uni'
+[United Arab Emirates, United Kingdom, United States of America]
+
+Countries starting with 'A'
+[Afghanistan, Albania, Algeria, Andorra...]
+
+Sorted Countries
+[Afghanistan, Albania, Algeria...]
+
+Top Country
+Afghanistan
