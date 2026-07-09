@@ -1,0 +1,7 @@
+Started LibraryManagementApplication
+
+or
+
+POST /books  → Book Added
+
+GET /books   → List of Books Returned
