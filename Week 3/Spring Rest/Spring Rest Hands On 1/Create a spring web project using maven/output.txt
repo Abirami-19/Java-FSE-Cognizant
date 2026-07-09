@@ -1,0 +1,9 @@
+INFO  - Inside main() method
+
+... Spring Boot Banner ...
+
+Tomcat started on port(s): 8080 (http)
+
+Started SpringLearnApplication in 2.4 seconds
+
+INFO  - Spring Boot Application Started Successfully
