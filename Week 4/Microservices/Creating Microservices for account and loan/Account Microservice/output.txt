@@ -1,0 +1,9 @@
+{
+  "number": "00987987973432",
+  "type": "savings",
+  "balance": 234343.0
+}
+
+
+Tomcat started on port(s): 8080
+Started AccountApplication
