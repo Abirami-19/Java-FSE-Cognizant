@@ -1,0 +1,70 @@
+<div class="container">
+
+    <h1>{{ portalName }}</h1>
+
+    <p>
+        Welcome to the Student Course Portal.
+    </p>
+
+    <hr>
+
+    <h2>Property Binding</h2>
+
+    <button
+        [disabled]="!isPortalActive"
+        (click)="onEnrollClick()">
+
+        Enroll Now
+
+    </button>
+
+    <p>{{ message }}</p>
+
+    <hr>
+
+    <h2>Two-Way Binding</h2>
+
+    <input
+        type="text"
+        placeholder="Search course..."
+        [(ngModel)]="searchTerm">
+
+    <p>
+
+        Searching for: {{ searchTerm }}
+
+    </p>
+
+    <hr>
+
+    <h2>Portal Statistics</h2>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Courses Available</h3>
+
+            <p>{{ availableCourses }}</p>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Students</h3>
+
+            <p>250</p>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Faculty</h3>
+
+            <p>35</p>
+
+        </div>
+
+    </div>
+
+</div>
