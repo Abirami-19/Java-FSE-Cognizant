@@ -1,0 +1,117 @@
+<h2>Reactive Enrollment Form</h2>
+
+<form [formGroup]="enrollForm" (ngSubmit)="onSubmit()">
+
+  <div>
+
+    <label>Student Name</label><br>
+
+    <input
+      type="text"
+      formControlName="studentName">
+
+    <div
+      *ngIf="enrollForm.get('studentName')?.touched &&
+             enrollForm.get('studentName')?.errors">
+
+      <small
+        *ngIf="enrollForm.get('studentName')?.errors?.['required']">
+        Name is required
+      </small>
+
+      <small
+        *ngIf="enrollForm.get('studentName')?.errors?.['minlength']">
+        Minimum 3 characters
+      </small>
+
+    </div>
+
+  </div>
+
+  <br>
+
+  <div>
+
+    <label>Email</label><br>
+
+    <input
+      type="email"
+      formControlName="studentEmail">
+
+    <div
+      *ngIf="enrollForm.get('studentEmail')?.touched &&
+             enrollForm.get('studentEmail')?.errors">
+
+      <small
+        *ngIf="enrollForm.get('studentEmail')?.errors?.['required']">
+        Email is required
+      </small>
+
+      <small
+        *ngIf="enrollForm.get('studentEmail')?.errors?.['email']">
+        Invalid email
+      </small>
+
+    </div>
+
+  </div>
+
+  <br>
+
+  <div>
+
+    <label>Course ID</label><br>
+
+    <input
+      type="number"
+      formControlName="courseId">
+
+  </div>
+
+  <br>
+
+  <div>
+
+    <label>Semester</label><br>
+
+    <select formControlName="preferredSemester">
+
+      <option value="Odd">
+        Odd
+      </option>
+
+      <option value="Even">
+        Even
+      </option>
+
+    </select>
+
+  </div>
+
+  <br>
+
+  <div>
+
+    <label>
+
+      <input
+        type="checkbox"
+        formControlName="agreeToTerms">
+
+      I Agree to Terms
+
+    </label>
+
+  </div>
+
+  <br>
+
+  <button
+    type="submit"
+    [disabled]="enrollForm.invalid">
+
+    Submit
+
+  </button>
+
+</form>
