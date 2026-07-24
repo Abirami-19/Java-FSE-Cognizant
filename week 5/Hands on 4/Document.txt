@@ -1,0 +1,5 @@
+maximumWarning
+Displays a warning when the application bundle exceeds the specified size.
+
+maximumError
+Causes the build to fail if the bundle size exceeds the specified limit.

@@ -1,0 +1,12 @@
+<app-course-card
+    *ngFor="let course of courses; trackBy: trackByCourseId"
+    appHighlight="lightblue"
+    [course]="{
+  id: course.id,
+  name: course.name,
+  code: course.code,
+  credits: course.credits,
+  gradeStatus: course.gradeStatus
+}"
+    (enrollRequested)="onEnroll($event)">
+</app-course-card>
