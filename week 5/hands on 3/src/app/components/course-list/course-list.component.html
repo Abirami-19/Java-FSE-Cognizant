@@ -1,0 +1,37 @@
+<!-- Loading -->
+<div *ngIf="isLoading">
+    <p>Loading courses...</p>
+</div>
+
+<!-- Error -->
+<div *ngIf="hasError" class="error-container">
+    <p class="error-message">{{ errorMessage }}</p>
+</div>
+
+<!-- Courses loaded successfully -->
+<div *ngIf="!isLoading && !hasError">
+
+    <div *ngIf="courses.length > 0; else noCourses">
+
+        <app-course-card
+
+            *ngFor="
+            let course of courses;
+            let i = index;
+            trackBy: trackByCourseId
+            "
+
+            [course]="course"
+            appHighlight="lightblue">
+
+        </app-course-card>
+
+    </div>
+
+</div>
+
+<ng-template #noCourses>
+
+    <p>No courses available.</p>
+
+</ng-template>
