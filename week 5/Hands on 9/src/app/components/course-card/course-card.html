@@ -1,0 +1,12 @@
+<article class="course-card">
+  <h3>{{ course().title }}</h3>
+  <p>{{ course().description }}</p>
+  <p><strong>{{ course().credits }}</strong> credits</p>
+  @if (enrolledIds$ | async; as enrolledIds) {
+    <button type="button" (click)="toggleEnrollment(enrolledIds)">
+      {{ enrolledIds.includes(course().id) ? 'Unenroll' : 'Enroll' }}
+    </button>
+  }
+  <button type="button" (click)="edit.emit(course())">Edit</button>
+  <button type="button" (click)="remove.emit(course())">Delete</button>
+</article>

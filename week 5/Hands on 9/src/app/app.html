@@ -1,0 +1,4 @@
+<app-header />
+@if (loadingService.isLoading$ | async) { <div class="global-spinner" role="status">Loading…</div> }
+@if (globalErrorService.message$ | async; as message) { <div class="global-error" role="alert">{{ message }} <button type="button" (click)="globalErrorService.clear()">Dismiss</button></div> }
+<main><router-outlet /></main>
