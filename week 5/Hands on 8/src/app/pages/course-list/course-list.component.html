@@ -1,0 +1,18 @@
+<section class="course-page">
+  <h2>Course Catalog</h2>
+  <form [formGroup]="courseForm" (ngSubmit)="saveCourse()" class="course-form">
+    <h3>{{ editingCourseId === null ? 'Add a course' : 'Edit course' }}</h3>
+    <label>Title <input formControlName="title" /></label>
+    <label>Description <input formControlName="description" /></label>
+    <label>Credits <input type="number" formControlName="credits" min="1" /></label>
+    <button type="submit">{{ editingCourseId === null ? 'Create course' : 'Save changes' }}</button>
+    @if (editingCourseId !== null) { <button type="button" (click)="cancelEdit()">Cancel</button> }
+  </form>
+  @if (successMessage) { <p class="success" role="status">{{ successMessage }}</p> }
+  @if (errorMessage) { <p class="error" role="alert">{{ errorMessage }}</p> }
+  @if (isLoading) { <p>Loading courses…</p> }
+  @if (!isLoading && !errorMessage && courses.length === 0) { <p>No courses are available yet.</p> }
+  <div class="course-grid">
+    @for (course of courses; track course.id) { <article class="course-card"><h3>{{ course.title }}</h3><p>{{ course.description }}</p><p><strong>{{ course.credits }}</strong> credits</p><button type="button" (click)="editCourse(course)">Edit</button><button type="button" (click)="deleteCourse(course)">Delete</button></article> }
+  </div>
+</section>
